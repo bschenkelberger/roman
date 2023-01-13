@@ -1,7 +1,9 @@
 package de.bsch.roman;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,7 +25,16 @@ public class Roman {
 	private static final String ROMAN_FORTY = "XL";
 
 
-	private static final List<String> VARIANTIONS = Arrays.asList(ROMAN_FOUR, ROMAN_NINE, ROMAN_FORTY);
+	private static final List<String> variations = Arrays.asList(ROMAN_FOUR, ROMAN_NINE, ROMAN_FORTY);
+	
+			
+	public static Map<String, Integer> numberRomanMap;
+	static {
+		numberRomanMap = new HashMap<String, Integer>();
+		numberRomanMap.put(ROMAN_FOUR, NUMBER_FOUR);
+		numberRomanMap.put(ROMAN_NINE, NUMBER_NINE);
+		numberRomanMap.put(ROMAN_FORTY, NUMBER_FORTY);
+	}
 
 	public static int convertInput(String input) {
 
@@ -55,7 +66,7 @@ public class Roman {
 			if (tmpIndex < lengthOfInput) {
 				charAtIndex2 = String.valueOf(charArray[tmpIndex]);
 				String tmp = charAtIndex1 + charAtIndex2;
-				if (VARIANTIONS.contains(tmp)) {
+				if (variations.contains(tmp)) {
 					result = handleTwo(result, tmp);
 					index = tmpIndex;
 					continue;
@@ -74,13 +85,9 @@ public class Roman {
 	// IX = 9
 	// XL = 40
 	private static Integer handleTwo(int result, String input) {
-
-		if (input.equals(ROMAN_FOUR)) {
-			result = result + NUMBER_FOUR;
-		} else if (input.equals(ROMAN_NINE)) {
-			result = result + NUMBER_NINE;
-		} else if (input.equals(ROMAN_FORTY)) {
-			result = result + NUMBER_FORTY;
+		Integer value = numberRomanMap.get(input);
+		if(value != null) {
+			result = result + value;
 		} else {
 			String[] inputAsArray = input.split("");
 			for (int index = 0; index < inputAsArray.length; index++) {
